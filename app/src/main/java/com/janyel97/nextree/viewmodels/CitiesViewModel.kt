@@ -6,37 +6,34 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.janyel97.nextree.common.NetworkResult
-import com.janyel97.nextree.data.model.CountryItemModel
+import com.janyel97.nextree.data.model.CityItemModel
 import com.janyel97.nextree.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CountriesViewModel @Inject constructor(
+class CitiesViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel(), LifecycleObserver {
 
     init {
-        getCountries()
+        getCities()
     }
 
-    val countriesList = SnapshotStateList<CountryItemModel>()
+    val citiesList = SnapshotStateList<CityItemModel>()
 
-    private fun getCountries() = viewModelScope.launch {
-        when (val result = mainRepository.getCountries()) {
+    private fun getCities(search: String? = null) = viewModelScope.launch {
+        when (val result = mainRepository.findCitiesByName(search)) {
             is NetworkResult.Success -> {
-                result.data?.let { countriesList.addAll(it.links.countryItems) }
+                result.data?.let {
+                    citiesList.clear()
+                    citiesList.addAll(it.data.cities)
+                }
             }
-
             else -> {
                 Log.e("Network Error", result.message.toString())
-
             }
         }
-    }
-
-    private fun getCities() = viewModelScope.launch {
-
     }
 }

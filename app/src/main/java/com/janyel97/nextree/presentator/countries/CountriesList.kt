@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.janyel97.nextree.presentator.countries.components.CountryItem
+import com.janyel97.nextree.utils.hrefToId
 import com.janyel97.nextree.viewmodels.CountriesViewModel
 
 @Composable
@@ -27,9 +28,7 @@ fun CountriesList(
                     countryName = country.name,
                     navigateToCountry = {
                         onNavigateToCountryDetails(
-                            country.href
-                                .substringAfterLast(":")
-                                .take(2)
+                            hrefToId(country.href)
                         )
                     }
                 )

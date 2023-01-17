@@ -17,9 +17,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.janyel97.nextree.data.model.CountryItemModel
+import com.janyel97.nextree.presentator.cities.CitiesList
 import com.janyel97.nextree.ui.theme.NextreeTheme
 import com.janyel97.nextree.presentator.countries.CountriesList
 import com.janyel97.nextree.presentator.countries.CountryDetail
+import com.janyel97.nextree.viewmodels.CitiesViewModel
 import com.janyel97.nextree.viewmodels.CountriesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +41,7 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = "countriesList"
+                        startDestination = "citiesList"
                     ) {
                         composable("countriesList") {
                             val countriesVM = hiltViewModel<CountriesViewModel>()
@@ -52,6 +54,12 @@ class MainActivity : ComponentActivity() {
                         composable("country/{countryId}") {
                             CountryDetail(
                                 countryId = it.arguments?.getString("countryId")
+                            )
+                        }
+                        composable("citiesList") {
+                            val citiesViewModel = hiltViewModel<CitiesViewModel>()
+                            CitiesList(
+                                citiesViewModel = citiesViewModel
                             )
                         }
                     }
