@@ -3,7 +3,6 @@ package com.janyel97.nextree.presentator
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,16 +12,21 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.janyel97.nextree.data.model.PlaceModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.janyel97.nextree.data.model.CountryItemModel
 import com.janyel97.nextree.ui.theme.NextreeTheme
-import com.janyel97.nextree.viewmodel.CountriesViewModel
+import com.janyel97.nextree.presentator.countries.CountriesList
+import com.janyel97.nextree.presentator.countries.CountryDetail
+import com.janyel97.nextree.viewmodels.CountriesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val countriesViewModel: CountriesViewModel by viewModels()
         setContent {
             NextreeTheme {
                 // A surface container using the 'background' color from the theme
@@ -30,10 +34,26 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    if (countriesViewModel.countriesList.isEmpty()) {
-                        Loading()
-                    } else {
-                        MainContent(countriesViewModel.countriesList)
+
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = "countriesList"
+                    ) {
+                        composable("countriesList") {
+                            val countriesVM = hiltViewModel<CountriesViewModel>()
+                            CountriesList(
+                                countriesViewModel = countriesVM
+                            ) { id ->
+                                navController.navigate("country/$id")
+                            }
+                        }
+                        composable("country/{countryId}") {
+                            CountryDetail(
+                                countryId = it.arguments?.getString("countryId")
+                            )
+                        }
                     }
                 }
             }
@@ -52,7 +72,7 @@ fun Loading(
 
 @Composable
 fun MainContent(
-    countriesList: List<PlaceModel>
+    countriesList: List<CountryItemModel>
 ) {
     LazyColumn {
         items(countriesList) {
