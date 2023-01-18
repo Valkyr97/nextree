@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.janyel97.nextree.common.NetworkResult
-import com.janyel97.nextree.data.model.CityItemModel
+import com.janyel97.nextree.data.model.common.ItemModel
 import com.janyel97.nextree.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,17 +18,16 @@ class CitiesViewModel @Inject constructor(
 ) : ViewModel(), LifecycleObserver {
 
     init {
-        getCities()
+        getUrbanAreas()
     }
 
-    val citiesList = SnapshotStateList<CityItemModel>()
+    val citiesList = SnapshotStateList<ItemModel>()
 
-    private fun getCities(search: String? = null) = viewModelScope.launch {
-        when (val result = mainRepository.findCitiesByName(search)) {
+    private fun getUrbanAreas() = viewModelScope.launch {
+        when (val result = mainRepository.getUrbanAreas()) {
             is NetworkResult.Success -> {
                 result.data?.let {
-                    citiesList.clear()
-                    citiesList.addAll(it.data.cities)
+                    citiesList.addAll(it.links.urbanAreasItems)
                 }
             }
             else -> {

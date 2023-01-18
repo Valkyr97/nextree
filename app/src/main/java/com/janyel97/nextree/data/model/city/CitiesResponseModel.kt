@@ -1,4 +1,4 @@
-package com.janyel97.nextree.data.model
+package com.janyel97.nextree.data.model.city
 
 import com.google.gson.annotations.SerializedName
 
