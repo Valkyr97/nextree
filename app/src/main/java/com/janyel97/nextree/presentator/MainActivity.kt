@@ -14,11 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import com.janyel97.nextree.presentator.cities.CitiesList
 import com.janyel97.nextree.presentator.cities.CityDetails
 import com.janyel97.nextree.ui.theme.NextreeTheme
-import com.janyel97.nextree.presentator.countries.CountriesList
-import com.janyel97.nextree.presentator.countries.CountryDetail
+import com.janyel97.nextree.utils.Constants
 import com.janyel97.nextree.viewmodels.CitiesViewModel
 import com.janyel97.nextree.viewmodels.CityDetailViewModel
-import com.janyel97.nextree.viewmodels.CountriesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,21 +35,8 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = "citiesList"
+                        startDestination = Constants.START_ROUTE
                     ) {
-                        composable("countriesList") {
-                            val countriesVM = hiltViewModel<CountriesViewModel>()
-                            CountriesList(
-                                countriesViewModel = countriesVM
-                            ) { id ->
-                                navController.navigate("country/$id")
-                            }
-                        }
-                        composable("country/{countryId}") {
-                            CountryDetail(
-                                countryId = it.arguments?.getString("countryId")
-                            )
-                        }
                         composable("citiesList") {
                             val citiesViewModel = hiltViewModel<CitiesViewModel>()
                             CitiesList(
@@ -63,8 +48,20 @@ class MainActivity : ComponentActivity() {
                         composable("city/{cityId}") {
                             val cityViewModel = hiltViewModel<CityDetailViewModel>()
                             CityDetails(
-                                id = it.arguments?.getString("cityId"),
-                                viewModel = cityViewModel
+//                                id = it.arguments?.getString("cityId"),
+                                viewModel = cityViewModel,
+                                onNavigateBack = { navController.navigate("citiesList") }
+                            )
+                        }
+                        composable("home") {
+                            Home(
+                                onStart = {
+                                    navController.navigate(
+                                        "citiesList"
+                                    ) {
+                                        popUpTo("home") { inclusive = true }
+                                    }
+                                }
                             )
                         }
                     }

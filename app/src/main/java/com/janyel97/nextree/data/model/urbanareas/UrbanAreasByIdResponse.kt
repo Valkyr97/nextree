@@ -9,11 +9,11 @@ data class UrbanAreasByIdResponse(
     @field: SerializedName("full_name")
     val full_name: String,
 
-    @field: SerializedName("is_government_partner")
-    val is_government_partner: Boolean,
+//    @field: SerializedName("is_government_partner")
+//    val is_government_partner: Boolean,
 
     @field: SerializedName("mayor")
-    val mayor: String,
+    val mayor: String?,
 
     @field: SerializedName("name")
     val name: String,

@@ -1,7 +1,6 @@
 package com.janyel97.nextree.utils
 
-fun hrefToId(href: String): String {
-    return href
+fun String.hrefToId() : String =
+    this
         .dropLast(1)
         .substringAfterLast('/')
-}

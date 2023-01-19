@@ -3,11 +3,11 @@ package com.janyel97.nextree.data.repository
 import com.janyel97.nextree.common.BaseApiResponse
 import com.janyel97.nextree.common.NetworkResult
 import com.janyel97.nextree.data.api.ApiService
-import com.janyel97.nextree.data.model.*
 import com.janyel97.nextree.data.model.city.CitiesResponseModel
 import com.janyel97.nextree.data.model.city.CityDetailResponse
 import com.janyel97.nextree.data.model.common.LinksModel
 import com.janyel97.nextree.data.model.country.CountryItemsModel
+import com.janyel97.nextree.data.model.urbanareas.UrbanAreaDetailsResponseModel
 import com.janyel97.nextree.data.model.urbanareas.UrbanAreasByIdResponse
 import com.janyel97.nextree.data.model.urbanareas.UrbanAreasImagesResponseModel
 import com.janyel97.nextree.data.model.urbanareas.UrbanAreasResponseModel
@@ -41,13 +41,18 @@ class MainRepository @Inject constructor(
             safeApiCall { apiService.getUrbanAreaImagesById(uaId) }
         }
 
-    suspend fun findCitiesByName(search: String?): NetworkResult<CitiesResponseModel> =
+    suspend fun getUrbanAreaDetailsById(uaId: String): NetworkResult<UrbanAreaDetailsResponseModel> =
         withContext(ioDispatcher) {
-            safeApiCall { apiService.findCitiesByName(search) }
+            safeApiCall { apiService.getUrbanAreaDetailsById(uaId) }
         }
 
-    suspend fun getCityById(cityId: String): NetworkResult<CityDetailResponse> =
-        withContext(ioDispatcher) {
-            safeApiCall { apiService.getCityDetails(cityId) }
-        }
+//    suspend fun findCitiesByName(search: String?): NetworkResult<CitiesResponseModel> =
+//        withContext(ioDispatcher) {
+//            safeApiCall { apiService.findCitiesByName(search) }
+//        }
+//
+//    suspend fun getCityById(cityId: String): NetworkResult<CityDetailResponse> =
+//        withContext(ioDispatcher) {
+//            safeApiCall { apiService.getCityDetails(cityId) }
+//        }
 }

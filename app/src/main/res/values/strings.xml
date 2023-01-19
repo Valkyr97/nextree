@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Nextree</string>
+    <string name="city_details_title">Interesting Facts</string>
+    <string name="city_details_more_button">See more details…</string>
+    <string name="home_tree_description">House in a Tree</string>
+    <string name="home_start_btn">Start Searching</string>
+    <string name="home_text">Select the next place where you and your family can put down roots</string>
 </resources>

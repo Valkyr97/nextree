@@ -28,7 +28,7 @@ fun CountriesList(
                     countryName = country.name,
                     navigateToCountry = {
                         onNavigateToCountryDetails(
-                            hrefToId(country.href)
+                            country.href.hrefToId()
                         )
                     }
                 )
